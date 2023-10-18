@@ -33,7 +33,16 @@ async function run() {
         const productCollection = client.db("productDB").collection("product")
 
 
-        // !st Step POST Method
+        // 2nd step
+        app.get('/product', async (req, res) => {
+            const cursor = productCollection.find()
+            const result = await cursor.toArray()
+            res.send(result)
+        })
+
+
+
+        // 1st Step POST Method
 
         app.post('/product', async (req, res) => {
             const newProduct = req.body;
