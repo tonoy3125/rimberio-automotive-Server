@@ -33,9 +33,19 @@ async function run() {
         const productCollection = client.db("productDB").collection("product")
         const brandCollection = client.db("productDB").collection("brandName")
 
-
+        // 6Types of brand get
         app.get('/brandname', async (req, res) => {
             const cursor = brandCollection.find()
+            const result = await cursor.toArray()
+            res.send(result)
+        })
+
+
+        // 3rd step
+        app.get('/product/:brandName', async (req, res) => {
+            const brandname = req.params.brandName
+            const query = { brandName: brandname }
+            const cursor = productCollection.find(query)
             const result = await cursor.toArray()
             res.send(result)
         })
