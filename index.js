@@ -33,6 +33,7 @@ async function run() {
         const productCollection = client.db("productDB").collection("product")
         const brandCollection = client.db("productDB").collection("brandName")
         const sliderCollection = client.db("productDB").collection("slider")
+        const cartCollection = client.db("productDB").collection("cart")
 
         // 6Types of brand get
         app.get('/brandname', async (req, res) => {
@@ -73,36 +74,36 @@ async function run() {
         // get
 
 
-        // app.get('/products/:id', async (req, res) => {
-        //     const id = req.params.id;
-        //     const query = { _id: new ObjectId(id) }
-        //     const result = await productCollection.findOne(query)
-        //     res.send(result)
-        // })
+        app.get('/cars/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) }
+            const result = await productCollection.findOne(query)
+            res.send(result)
+        })
 
 
         // Update product
 
-        // app.put('/products/:id', async (req, res) => {
-        //     const id = req.params.id;
-        //     const filter = { _id: new ObjectId(id) }
-        //     const options = { upsert: true };
-        //     const updatedProduct = req.body
-        //     const product = {
-        //         $set: {
-        //             name: updatedProduct.name,
-        //             brandName: updatedProduct.brandName,
-        //             type: updatedProduct.type,
-        //             price: updatedProduct.price,
-        //             description: updatedProduct.description,
-        //             rating: updatedProduct.rating,
-        //             image: updatedProduct.image
+        app.put('/product/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: new ObjectId(id) }
+            const options = { upsert: true };
+            const updatedProduct = req.body
+            const product = {
+                $set: {
+                    name: updatedProduct.name,
+                    brandName: updatedProduct.brandName,
+                    type: updatedProduct.type,
+                    price: updatedProduct.price,
+                    description: updatedProduct.description,
+                    rating: updatedProduct.rating,
+                    image: updatedProduct.image
 
-        //         }
-        //     }
-        //     const result = await productCollection.updateOne(filter, product, options)
-        //     res.send(result)
-        // })
+                }
+            }
+            const result = await productCollection.updateOne(filter, product, options)
+            res.send(result)
+        })
 
 
         // 2nd step
@@ -122,6 +123,31 @@ async function run() {
             const result = await productCollection.insertOne(newProduct);
             res.send(result)
         })
+
+
+
+        // add to cart
+
+        app.post("/addTocart", async (req, res) => {
+            const cart = req.body;
+            console.log("new post ", cart);
+            const result = await cartCollection.insertOne(cart);
+            console.log(result);
+            res.send(result);
+        });
+
+
+        
+
+        // get  multiple cart data by user email
+        app.get("/addTocart/:email", async (req, res) => {
+            const find = req.params.email;
+            console.log(find);
+            const query = { email: find };
+            const cursor = cartCollection.find(query);
+            const result = await cursor.toArray();
+            res.send(result);
+        });
 
 
 
