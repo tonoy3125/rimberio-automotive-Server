@@ -32,6 +32,7 @@ async function run() {
 
         const productCollection = client.db("productDB").collection("product")
         const brandCollection = client.db("productDB").collection("brandName")
+        const sliderCollection = client.db("productDB").collection("slider")
 
         // 6Types of brand get
         app.get('/brandname', async (req, res) => {
@@ -46,6 +47,13 @@ async function run() {
             const brandname = req.params.brandName
             const query = { brandName: brandname }
             const cursor = productCollection.find(query)
+            const result = await cursor.toArray()
+            res.send(result)
+        })
+
+        // 4th
+        app.get('/slider', async (req, res) => {
+            const cursor = sliderCollection.find()
             const result = await cursor.toArray()
             res.send(result)
         })
