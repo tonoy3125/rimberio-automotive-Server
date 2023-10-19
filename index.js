@@ -137,7 +137,7 @@ async function run() {
         });
 
 
-        
+
 
         // get  multiple cart data by user email
         app.get("/addTocart/:email", async (req, res) => {
@@ -148,6 +148,14 @@ async function run() {
             const result = await cursor.toArray();
             res.send(result);
         });
+
+// cart Delete method
+        app.delete('/addTocart/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) }
+            const result = await cartCollection.deleteOne(query)
+            res.send(result)
+        })
 
 
 
