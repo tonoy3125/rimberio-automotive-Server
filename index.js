@@ -29,7 +29,7 @@ async function run() {
     try {
         // Connect the client to the server	(optional starting in v4.7)
         await client.connect();
-
+        // Collection
         const productCollection = client.db("productDB").collection("product")
         const brandCollection = client.db("productDB").collection("brandName")
         const sliderCollection = client.db("productDB").collection("slider")
@@ -43,7 +43,7 @@ async function run() {
         })
 
 
-        // 3rd step
+        // get specific brandName product
         app.get('/product/:brandName', async (req, res) => {
             const brandname = req.params.brandName
             const query = { brandName: brandname }
@@ -71,8 +71,7 @@ async function run() {
         })
 
 
-        // get
-
+        // get update product
 
         app.get('/cars/:id', async (req, res) => {
             const id = req.params.id;
@@ -106,7 +105,7 @@ async function run() {
         })
 
 
-        // 2nd step
+        // 2nd step get Product
         app.get('/product', async (req, res) => {
             const cursor = productCollection.find()
             const result = await cursor.toArray()
@@ -149,7 +148,7 @@ async function run() {
             res.send(result);
         });
 
-// cart Delete method
+        // cart Delete method
         app.delete('/addTocart/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: new ObjectId(id) }
